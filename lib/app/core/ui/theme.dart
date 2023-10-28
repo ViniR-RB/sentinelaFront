@@ -6,7 +6,7 @@ import 'colors.dart';
 sealed class AppTheme {
   static ThemeData theme = ThemeData(
     useMaterial3: true,
-    primarySwatch: Colors.blue,
+    colorSchemeSeed: AppColor.green,
     scaffoldBackgroundColor: Colors.white,
     textTheme: GoogleFonts.poppinsTextTheme(),
     textButtonTheme: TextButtonThemeData(
@@ -19,9 +19,19 @@ sealed class AppTheme {
     ),
     inputDecorationTheme: InputDecorationTheme(
       focusColor: AppColor.greenLight,
+      fillColor: AppColor.grey,
+      filled: true,
       focusedBorder: OutlineInputBorder(
+          borderRadius: const BorderRadius.all(
+            Radius.circular(12),
+          ),
           borderSide: BorderSide(color: AppColor.greenLight)),
-      border: const OutlineInputBorder(),
+      border: const OutlineInputBorder(
+        borderSide: BorderSide.none,
+        borderRadius: BorderRadius.all(
+          Radius.circular(12),
+        ),
+      ),
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
