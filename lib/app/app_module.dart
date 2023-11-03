@@ -38,4 +38,9 @@ class AppModule extends Module {
             ));
     r.module('/home', module: HomeModule());
   }
+
+  @override
+  void exportedBinds(Injector i) {
+    i.addSingleton(() => Dio(BaseOptions(baseUrl: AppConfigure.apiUrl)));
+  }
 }

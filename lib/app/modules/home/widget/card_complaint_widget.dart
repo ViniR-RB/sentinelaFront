@@ -3,7 +3,13 @@ import 'package:flutter/material.dart';
 import '../../../core/ui/colors.dart';
 
 class CardComplaintWidget extends StatelessWidget {
-  const CardComplaintWidget({super.key});
+  final String title;
+  final String image;
+  const CardComplaintWidget({
+    super.key,
+    required this.title,
+    required this.image,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -21,11 +27,11 @@ class CardComplaintWidget extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   ClipRRect(
-                    borderRadius: const BorderRadius.all(Radius.circular(4)),
+                    borderRadius: const BorderRadius.all(Radius.circular(32)),
                     child: SizedBox(
                       width: 126,
-                      child: Image.network(
-                          "https://catracalivre.com.br/wp-content/uploads/2019/08/amazonia-pegando-fogo.jpg"),
+                      height: 100,
+                      child: Image.network(image),
                     ),
                   ),
                   const SizedBox(
@@ -36,8 +42,7 @@ class CardComplaintWidget extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                          "Fjallraven - Foldsack No. 1 Backpack, Fits 15 Laptops",
+                      Text(title,
                           maxLines: 3,
                           textWidthBasis: TextWidthBasis.parent,
                           textAlign: TextAlign.start,

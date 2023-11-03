@@ -16,7 +16,7 @@ class SplashController {
     final bool userExists = await shared.checkExistUser();
     switch (userExists) {
       case true:
-        Modular.to.navigate("/onboard");
+        Modular.to.navigate("/home/");
       case false:
         final result = await repository.createUser();
         switch (result) {
