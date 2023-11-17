@@ -15,7 +15,6 @@ class HomeRepository implements IHomeRepository {
       getAllComplaint() async {
     try {
       final Response(:data) = await dio.get<List<dynamic>>("/api/complaint");
-      print(data);
       final complaintList =
           data!.map((e) => ComplaintModel.fromMap(e)).toList();
       return Sucess(complaintList);

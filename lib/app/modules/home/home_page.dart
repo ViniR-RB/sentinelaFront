@@ -29,6 +29,11 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Denúncias"),
+        actions: [
+          IconButton(
+              onPressed: () => widget.store.getAllComplaints(),
+              icon: const Icon(Icons.refresh))
+        ],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => Modular.to.pushNamed('/home/complaint-send'),
@@ -66,7 +71,7 @@ class _HomePageState extends State<HomePage> {
                                     arguments: complaint),
                                 child: CardComplaintWidget(
                                   image: complaint.image,
-                                  title: complaint.description,
+                                  title: complaint.title,
                                 ),
                               );
                             }))

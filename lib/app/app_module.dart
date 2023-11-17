@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:sentinela/app/core/configurations/app_configuration.dart';
+import 'package:sentinela/app/core/services/image_picker_service.dart';
 import 'package:sentinela/app/core/services/shared_user_service.dart';
 import 'package:sentinela/app/modules/error/error_page.dart';
 import 'package:sentinela/app/modules/onboard/onboard_page.dart';
@@ -9,6 +10,7 @@ import 'package:sentinela/app/modules/splash/repository/splash_repository.dart';
 import 'package:sentinela/app/modules/splash/splash_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'core/services/geolocator_service.dart';
 import 'modules/home/home_module.dart';
 import 'modules/splash/controller/splash_controller.dart';
 
@@ -22,6 +24,8 @@ class AppModule extends Module {
     i.addSingleton<Future<SharedPreferences>>(
       () => SharedPreferences.getInstance(),
     );
+    i.addLazySingleton(GeolocatorService.new);
+    i.addLazySingleton(ImagePickerService.new);
   }
 
   @override
@@ -40,7 +44,5 @@ class AppModule extends Module {
   }
 
   @override
-  void exportedBinds(Injector i) {
-    i.addSingleton(() => Dio(BaseOptions(baseUrl: AppConfigure.apiUrl)));
-  }
+  void exportedBinds(Injector i) {}
 }

@@ -3,6 +3,7 @@ import 'dart:convert';
 
 class ComplaintModel {
   final String id;
+  final String title;
   final String description;
   final String longitude;
   final String latitude;
@@ -12,6 +13,7 @@ class ComplaintModel {
 
   ComplaintModel({
     required this.id,
+    required this.title,
     required this.description,
     required this.longitude,
     required this.latitude,
@@ -22,6 +24,7 @@ class ComplaintModel {
 
   ComplaintModel copyWith({
     String? id,
+    String? title,
     String? description,
     String? longitude,
     String? latitude,
@@ -31,6 +34,7 @@ class ComplaintModel {
   }) {
     return ComplaintModel(
       id: id ?? this.id,
+      title: title ?? this.title,
       description: description ?? this.description,
       longitude: longitude ?? this.longitude,
       latitude: latitude ?? this.latitude,
@@ -43,6 +47,7 @@ class ComplaintModel {
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'id': id,
+      'title': title,
       'description': description,
       'longitude': longitude,
       'latitude': latitude,
@@ -52,10 +57,22 @@ class ComplaintModel {
     };
   }
 
+  Map<String, dynamic> toSendApi() {
+    return <String, dynamic>{
+      'title': title,
+      'description': description,
+      'longitude': longitude,
+      'latitude': latitude,
+      'status': status,
+      "file": image
+    };
+  }
+
   factory ComplaintModel.fromMap(Map<String, dynamic> map) {
     return switch (map) {
       {
         "id": final String id,
+        "title": final String title,
         "description": final String description,
         "longitude": final String longitude,
         "latitude": final String latitude,
@@ -65,6 +82,7 @@ class ComplaintModel {
       } =>
         ComplaintModel(
           id: id,
+          title: title,
           description: description,
           longitude: longitude,
           latitude: latitude,
