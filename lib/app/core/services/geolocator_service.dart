@@ -10,20 +10,22 @@ class GeolocatorService {
 
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
-      return Future.error('Location services are disabled.');
+      throw GeolocatorServiceException(
+          'Os serviços de localização estão desativados, por favor Ativio-os');
     }
 
     permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.denied) {
-        throw GeolocatorServiceException('Location permissions are denied');
+        throw GeolocatorServiceException(
+            'As permissões de localização foram negadas, por favor nos der permissão para darmos prosseguimento no envio das denúncias');
       }
     }
 
     if (permission == LocationPermission.deniedForever) {
       throw GeolocatorServiceException(
-          'Location permissions are permanently denied, we cannot request permissions.');
+          'As permissões de localização são negadas permanentemente, não podemos solicitar permissões. por favor nos der permissão nas configurações do seu dispositivo');
     }
 
     return await Geolocator.getCurrentPosition();

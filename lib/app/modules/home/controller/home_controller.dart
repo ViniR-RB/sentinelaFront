@@ -5,8 +5,7 @@ import '../states/home_state.dart';
 class HomeController extends ValueNotifier<HomeState> {
   HomeController() : super(HomeInitialState());
 
-  emit(HomeState state) {
+  void emit(HomeState state) {
     value = state;
-    return;
   }
 }

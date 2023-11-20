@@ -49,6 +49,10 @@ class SendComplaintRepository implements ISendComplaintRepository {
     } on GeolocatorServiceException catch (e, s) {
       log(e.message, error: e, stackTrace: s);
       return Failure(SendComplaintRepositoryException(e.message));
+    } on DioException catch (e, s) {
+      log("Houve um problema com envio da denúncia", error: e, stackTrace: s);
+      return Failure(SendComplaintRepositoryException(
+          "Houve um problema com envio da denúncia"));
     } catch (e, s) {
       log("Houve um erro inesperado tente novamente", stackTrace: s, error: e);
       return Failure(SendComplaintRepositoryException(
@@ -76,12 +80,12 @@ class SendComplaintRepository implements ISendComplaintRepository {
       });
       await _dio.post("/api/complaint", data: formData);
       return Sucess(Nil());
+    } on GeolocatorServiceException catch (e) {
+      return Failure(SendComplaintRepositoryException(e.message));
     } on DioException catch (e, s) {
       log("Houve um problema com envio da denúncia", error: e, stackTrace: s);
       return Failure(SendComplaintRepositoryException(
           "Houve um problema com envio da denúncia"));
-    } on GeolocatorServiceException catch (e) {
-      return Failure(SendComplaintRepositoryException(e.message));
     } catch (e, s) {
       log("Houve um erro inesperado tente novamente", stackTrace: s, error: e);
       return Failure(SendComplaintRepositoryException(

@@ -52,8 +52,9 @@ class _HomePageState extends State<HomePage> {
                     Padding(
                       padding:
                           const EdgeInsets.only(top: 16.0, left: 8, right: 8),
-                      child: SearchTextField(
-                          searchEC, (p0) {}, "Busque por um titulo"),
+                      child: SearchTextField(searchEC, (String title) {
+                        widget.store.searchTitleComplaint(title);
+                      }, "Busque por um titulo"),
                     ),
                     const SizedBox(height: 16),
                     Expanded(
