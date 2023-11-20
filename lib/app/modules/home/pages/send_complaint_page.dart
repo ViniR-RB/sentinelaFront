@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:sentinela/app/core/models/organs_model.dart';
 import 'package:sentinela/app/core/ui/colors.dart';
 import 'package:sentinela/app/modules/home/states/send_complaint_state.dart';
 import 'package:sentinela/app/modules/home/store/send_complaint_store.dart';
@@ -21,13 +22,36 @@ class _SendComplaintPageState extends State<SendComplaintPage> {
   final _addressEC = TextEditingController();
   final _descriptionEC = TextEditingController();
 
-  List<String> dropdownItems = ['Opção 1', 'Opção 2', 'Opção 3'];
-  String selectedDropdownItem = 'Opção 1';
+  late List<String> dropdownItems = ['Selecione um Orgão'];
+  late List<OrgansModel> organsItem = [];
+  String selectedDropdownItem = 'Selecione um Orgão';
   late File _imageFile = File('');
   List<Widget> icons = <Widget>[
     const Icon(Icons.location_on),
     const Icon(Icons.location_off),
   ];
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      initApp();
+    });
+  }
+
+  initApp() async {
+    if (widget.store.orgsn.isEmpty) {
+      await widget.store.getAllOrgans();
+      organsItem.addAll(widget.store.orgsn);
+      dropdownItems.addAll(organsItem.map((e) => e.name));
+    }
+    if (organsItem.isEmpty) {
+      organsItem.addAll(widget.store.orgsn);
+    }
+    if (dropdownItems.length == 1) {
+      dropdownItems.addAll(organsItem.map((e) => e.name));
+    }
+    setState(() {});
+  }
 
   Future<void> getImage() async {
     File imageFile = await widget.store.getImage();
@@ -35,6 +59,15 @@ class _SendComplaintPageState extends State<SendComplaintPage> {
       _imageFile = imageFile;
     });
   }
+
+  /* @override
+  void dispose() {
+    if (context.mounted) {
+      return;
+    }
+    widget.store.dispose();
+    super.dispose();
+  } */
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +82,7 @@ class _SendComplaintPageState extends State<SendComplaintPage> {
           return switch (value) {
             SendComplaintInitialState() => SingleChildScrollView(
                 child: Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(0),
                   child: SizedBox(
                     height: size.height,
                     width: size.width,
@@ -106,62 +139,68 @@ class _SendComplaintPageState extends State<SendComplaintPage> {
                           const SizedBox(height: 16),
                           const Text('Enviar Agora Sua Denuncia'),
                           const SizedBox(height: 8),
-                          TextField(
-                            controller: _titleEC,
-                            decoration: const InputDecoration(
-                              labelText: 'Titulo',
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 8,
-                          ),
-                          TextField(
-                            maxLines: null,
-                            minLines: 3,
-                            controller: _descriptionEC,
-                            keyboardType: TextInputType.multiline,
-                            decoration: const InputDecoration(
-                              constraints: BoxConstraints(maxHeight: 300),
-                              labelText: 'Descrição',
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 8,
-                          ),
-                          SizedBox(
-                            height: 64,
-                            width: size.width,
-                            child: DropdownButton<String>(
-                              padding: const EdgeInsets.only(left: 8),
-                              hint: const Text(
-                                  'Selecione uma Categoria de Denuncia'),
-                              items: dropdownItems.map((item) {
-                                return DropdownMenuItem<String>(
-                                  value: item,
-                                  child: Text(item),
-                                );
-                              }).toList(),
-                              value: selectedDropdownItem,
-                              elevation: 16,
-                              underline: Container(
-                                height: 2,
-                                decoration:
-                                    BoxDecoration(color: AppColor.greenLight),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: TextField(
+                              controller: _titleEC,
+                              decoration: const InputDecoration(
+                                labelText: 'Titulo',
                               ),
-                              onChanged: (value) {
-                                setState(() {
-                                  selectedDropdownItem = value!;
-                                });
-                              },
                             ),
                           ),
                           const SizedBox(
                             height: 8,
                           ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisSize: MainAxisSize.max,
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: TextField(
+                              maxLines: null,
+                              minLines: 3,
+                              controller: _descriptionEC,
+                              keyboardType: TextInputType.multiline,
+                              decoration: const InputDecoration(
+                                constraints: BoxConstraints(maxHeight: 300),
+                                labelText: 'Descrição',
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 8,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: SizedBox(
+                              height: 64,
+                              width: size.width,
+                              child: DropdownButton<String>(
+                                hint: Text(selectedDropdownItem),
+                                items: dropdownItems.map((item) {
+                                  return DropdownMenuItem<String>(
+                                    value: item,
+                                    child: Text(item),
+                                  );
+                                }).toList(),
+                                value: selectedDropdownItem,
+                                elevation: 16,
+                                underline: Container(
+                                  height: 2,
+                                  decoration:
+                                      BoxDecoration(color: AppColor.greenLight),
+                                ),
+                                onChanged: (value) {
+                                  setState(() {
+                                    selectedDropdownItem = value!;
+                                  });
+                                },
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 8,
+                          ),
+                          Wrap(
+                            alignment: WrapAlignment.center,
+                            crossAxisAlignment: WrapCrossAlignment.center,
                             children: [
                               SizedBox(
                                 width: size.width * 0.7,
@@ -198,15 +237,28 @@ class _SendComplaintPageState extends State<SendComplaintPage> {
                           const SizedBox(
                             height: 8,
                           ),
-                          ElevatedButton(
-                            onPressed: () async {
-                              await widget.store.sendComplaint(
-                                  _titleEC.text,
-                                  _descriptionEC.text,
-                                  selectedGps[0],
-                                  _addressEC.text);
-                            },
-                            child: const Text('Enviar'),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: ElevatedButton(
+                              onPressed: () async {
+                                if (organsItem.any((element) =>
+                                    element.name == selectedDropdownItem)) {
+                                  await widget.store.sendComplaint(
+                                    _titleEC.text,
+                                    _descriptionEC.text,
+                                    selectedGps[0],
+                                    _addressEC.text,
+                                    organsItem
+                                        .where((element) =>
+                                            element.name ==
+                                            selectedDropdownItem)
+                                        .toList()[0]
+                                        .id,
+                                  );
+                                }
+                              },
+                              child: const Text('Enviar'),
+                            ),
                           ),
                         ],
                       ),
@@ -223,23 +275,39 @@ class _SendComplaintPageState extends State<SendComplaintPage> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Text("Denuncia Enviada com Sucesso"),
+                      const Text(
+                        "Denuncia Enviada com Sucesso",
+                        maxLines: 2,
+                        textAlign: TextAlign.center,
+                      ),
                       ElevatedButton(
-                          onPressed: () => Modular.to.pop(),
-                          child:
-                              const Text("Voltar para a Pagina de Denúncias"))
+                        onPressed: () => {
+                          Modular.to.pop(),
+                          widget.store.restoreStateFromInitial()
+                        },
+                        child: const Text(
+                          "Voltar para a Pagina de Denúncias",
+                          textAlign: TextAlign.center,
+                        ),
+                      )
                     ],
                   ),
                 ),
               ),
             SendComplaintErrorState() => Center(
-                child: Column(
-                  children: [
-                    Text(value.e.message),
-                    ElevatedButton(
-                        onPressed: () => Modular.to.pop(),
-                        child: const Text("Voltar para a Pagina de Denúncias"))
-                  ],
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 16.0, right: 16.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(value.e.message, textAlign: TextAlign.center),
+                      ElevatedButton(
+                          onPressed: () => {
+                                widget.store.restoreStateFromInitial(),
+                              },
+                          child: const Text("Tentar Novamente"))
+                    ],
+                  ),
                 ),
               )
           };

@@ -71,7 +71,9 @@ class _HomePageState extends State<HomePage> {
                                     arguments: complaint),
                                 child: CardComplaintWidget(
                                   image: complaint.image,
+                                  description: complaint.description,
                                   title: complaint.title,
+                                  createAt: complaint.createdAt,
                                 ),
                               );
                             }))

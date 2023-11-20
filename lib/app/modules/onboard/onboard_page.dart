@@ -55,7 +55,9 @@ class _OnBoardPageState extends State<OnBoardPage> {
                   'Assim você ajuda você colabora com a sua Comunidade e com a Sociedade',
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                      color: AppColor.grey, fontSize: 14, letterSpacing: 0.1),
+                      color: AppColor.greyText,
+                      fontSize: 14,
+                      letterSpacing: 0.1),
                 ),
                 const SizedBox(
                   height: 8,
@@ -106,7 +108,9 @@ class _OnBoardPageState extends State<OnBoardPage> {
                   child: Text.rich(
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                        color: AppColor.grey, fontSize: 14, letterSpacing: 0.1),
+                        color: AppColor.greyText,
+                        fontSize: 14,
+                        letterSpacing: 0.1),
                     const TextSpan(
                       children: [
                         TextSpan(
@@ -114,7 +118,6 @@ class _OnBoardPageState extends State<OnBoardPage> {
                                 'Assim Você ajuda a indetificar problemas como: '),
                         TextSpan(
                           text: 'Lixo,Desmatamento e Queimadas',
-                          style: TextStyle(color: Colors.black),
                         )
                       ],
                     ),
@@ -178,7 +181,9 @@ class _OnBoardPageState extends State<OnBoardPage> {
                     'Com Apenas uma Foto, você já pode começar a mudar o Mundo',
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                        color: AppColor.grey, fontSize: 14, letterSpacing: 0.1),
+                        color: AppColor.greyText,
+                        fontSize: 14,
+                        letterSpacing: 0.1),
                   ),
                 ),
                 const SizedBox(

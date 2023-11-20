@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:sentinela/app/modules/splash/controller/splash_controller.dart';
 
+import '../../core/constants/app_assets_path.dart';
+
 class SplashPage extends StatefulWidget {
   final SplashController controller;
   const SplashPage({super.key, required this.controller});
@@ -20,9 +22,9 @@ class _SplashPageState extends State<SplashPage> {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       body: Center(
-        child: Text("Sentinela"),
+        child: Image.asset(AppAssetsPath.background),
       ),
     );
   }
