@@ -39,12 +39,18 @@ class HomeStore {
     if (titleComplaint.isEmpty || titleComplaint == "") {
       _homeStateController.emit(HomeLoadedState(_complaintList));
     } else {
-      _homeStateController.emit(HomeLoadedState(_complaintList
+      final filteredList = _complaintList
           .where((element) => element.title
               .toLowerCase()
               .contains(titleComplaint.toLowerCase()))
-          .toList()));
-      print(_homeStateController.value);
+          .toSet()
+          .toList();
+
+      _homeStateController.emit(
+        HomeLoadedState(
+          filteredList,
+        ),
+      );
     }
   }
 
