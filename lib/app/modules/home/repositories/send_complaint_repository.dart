@@ -66,7 +66,7 @@ class SendComplaintRepository implements ISendComplaintRepository {
           String title, String description, String organId, File image) async {
     try {
       final Position position = await _geolocatorService.determinePosition();
-      String fileName = image.path.split('/').last;
+      String fileName = image.path.split('/').last + organId;
       final UserModel? user = await _sharedUserService.getUser();
       FormData formData = FormData.fromMap({
         "file": await MultipartFile.fromFile(image.path, filename: fileName),
